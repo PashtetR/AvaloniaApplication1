@@ -1,0 +1,68 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaApplication1.ViewModels"
+        xmlns:models="using:AvaloniaApplication1.Models"
+        xmlns:converters="using:AvaloniaApplication1.Converters"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:Width="1200" d:Height="450"
+        x:Class="AvaloniaApplication1.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaApplication1">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+  <Window.Resources>
+    <converters:TreeItemsConverter x:Key="TreeItemsConverter"/>  
+  </Window.Resources>
+  
+  <Grid RowDefinitions="30, *" ColumnDefinitions="400,400,400">
+    <TextBlock>Direct ObservableCollections binding</TextBlock>
+    <TreeView Grid.Row="1" x:Name="TreeViewProject" Items="{Binding Devices}" >
+      <TreeView.DataTemplates>       
+        <TreeDataTemplate DataType="models:Device" ItemsSource="{Binding TagGroups}">
+          <TextBlock Foreground="YellowGreen" Text="{Binding Name}" />
+        </TreeDataTemplate>
+        <TreeDataTemplate DataType="models:TagGroup" ItemsSource="{Binding Tags}">
+          <TextBlock Foreground="Brown" Text="{Binding Name}"/>
+        </TreeDataTemplate>
+        <TreeDataTemplate DataType="models:Tag">
+          <TextBlock Foreground="Violet" Text="{Binding Alias}" />
+        </TreeDataTemplate>
+      </TreeView.DataTemplates>
+    </TreeView>
+
+    <TextBlock Grid.Column="1">TreeDataTemplate.ItemsSource converter</TextBlock>
+    <TreeView Grid.Row="1" Grid.Column="1" x:Name="TreeViewProject2" Items="{Binding Devices}" >
+      <TreeView.DataTemplates>
+        <TreeDataTemplate DataType="models:Device" ItemsSource="{Binding, Converter= {StaticResource TreeItemsConverter}}">
+          <TextBlock Foreground="YellowGreen" Text="{Binding Name}" />
+        </TreeDataTemplate>
+        <TreeDataTemplate DataType="models:TagGroup" ItemsSource="{Binding, Converter= {StaticResource TreeItemsConverter}}">
+          <TextBlock Foreground="Brown" Text="{Binding Name}"/>
+        </TreeDataTemplate>
+        <TreeDataTemplate DataType="models:Tag">
+          <TextBlock Foreground="Violet" Text="{Binding Alias}" />
+        </TreeDataTemplate>
+      </TreeView.DataTemplates>
+    </TreeView>
+
+    <TextBlock Grid.Column="2">TreeView.Items converter</TextBlock>
+    <TreeView Grid.Row="2" Grid.Column="2" x:Name="TreeViewProject3" Items="{Binding Devices, Converter= {StaticResource TreeItemsConverter}}" >
+      <TreeView.DataTemplates>
+        <TreeDataTemplate DataType="models:Device" ItemsSource="{Binding, Converter= {StaticResource TreeItemsConverter}}">
+          <TextBlock Foreground="YellowGreen" Text="{Binding Name}" />
+        </TreeDataTemplate>
+        <TreeDataTemplate DataType="models:TagGroup" ItemsSource="{Binding, Converter= {StaticResource TreeItemsConverter}}">
+          <TextBlock Foreground="Brown" Text="{Binding Name}"/>
+        </TreeDataTemplate>
+        <TreeDataTemplate DataType="models:Tag">
+          <TextBlock Foreground="Violet" Text="{Binding Alias}" />
+        </TreeDataTemplate>
+      </TreeView.DataTemplates>
+    </TreeView>
+  </Grid>
+
+</Window>
